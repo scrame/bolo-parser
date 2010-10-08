@@ -8,12 +8,12 @@ class Pillbox:
         self.armor = None
         self.speed = None
 
-    def to_s(self):
-        print("x:\t" + str(self.x))
-        print("y:\t" + str(self.x))
-        print("owner:\t" + str(self.owner))
-        print("armor:\t" + str(self.armor))
-        print("speed:\t" + str(self.speed))
+    def __repr__(self):
+        return ("x:\t" + str(self.x)
+        + ("\ny:\t" + str(self.x))
+        + ("\nowner:\t" + str(self.owner))
+        + ("\narmor:\t" + str(self.armor))
+        + ("\nspeed:\t" + str(self.speed)))
 
 
 class Refueller:
@@ -25,13 +25,13 @@ class Refueller:
         self.shells = None
         self.mines = None
         
-    def to_s(self):
-        print("x:\t" + str(self.x))
-        print("y:\t" + str(self.x))
-        print("owner:\t" + str(self.owner))
-        print("armor:\t" + str(self.armor))
-        print("shells:\t" + str(self.shells))
-        print("mines:\t" + str(self.mines))
+    def __repr__(self):
+        return ("x:\t" + str(self.x)
+        + ("\ny:\t" + str(self.x))
+        + ("\nowner:\t" + str(self.owner))
+        + ("\narmor:\t" + str(self.armor))
+        + ("\nshells:\t" + str(self.shells))
+        + ("\nmines:\t" + str(self.mines)))
 
 
 class StartingPoint:
@@ -40,10 +40,10 @@ class StartingPoint:
         self.y = None
         self.dir = None
     
-    def to_s(self):
-        print("x:\t" + str(self.x))
-        print("y:\t" + str(self.x))
-        print("dir:\t" + str(self.dir))
+    def __repr__(self):
+        return ("x:\t" + str(self.x)
+        + ("\ny:\t" + str(self.x))
+        + ("\ndir:\t" + str(self.dir)))
 
 class Run:
     terrain_names = [
@@ -90,6 +90,17 @@ class Run:
         self.startx = None
         self.endx = None
         self.data = None
+
+
+    #The hard part. The data is held in run-level encoding, and has to read the MSB of 
+    #each byte of data. 
+    def apply_to_map(self, map):
+        if(4 != self.datalen):
+            data_counter = 0;
+            for x in range(self.startx, self.endx):
+                print x,":",self.y,self.data[data_counter]
+                map[self.y][x] = self.data[data_counter]
+                data_counter += 1
         
     #from the docs:
     #The end of the map is marked by a run { 4, 0xFF, 0xFF, 0xFF };
@@ -101,14 +112,11 @@ class Run:
                         return True
         return False
         
-    def to_s(self):
-        print("datalen:\t" + str(self.datalen))
-        print("y:\t" + str(self.y))
-        print("startx:\t" + str(self.startx))
-        print("endx:\t" + str(self.endx))
-
-
-
+    def __repr__(self):
+        return ("len:\t" + str(self.datalen)
+        + ("\ny:\t" + str(self.y))
+        + ("\nstartx:\t" + str(self.startx))
+        + ("\nendx:\t" + str(self.endx)))
 
 map_file= "maps/Fitzhu.map"
 
@@ -148,7 +156,7 @@ for i in range(num_pillboxes):
     pillbox.owner = ord(fd.read(1))
     pillbox.armor = ord(fd.read(1))
     pillbox.speed = ord(fd.read(1))
-    print(pillbox.to_s())
+    print(pillbox)
     pillboxes.append(pillbox)
 
 print("Parsing Refuelling Stations")
@@ -162,7 +170,7 @@ for i in range(num_refuelling_stations):
     refueller.armor = ord(fd.read(1))
     refueller.shells = ord(fd.read(1))
     refueller.mines = ord(fd.read(1))
-    print(refueller.to_s())
+    print(refueller)
     refuellers.append(refueller)
 
 print("Parsing Starting Squares")
@@ -173,8 +181,11 @@ for i in range(num_tank_starting_squares):
     start.x = ord(fd.read(1))
     start.y = ord(fd.read(1))
     start.dir = ord(fd.read(1))
-    print(start.to_s())
+    print(start)
     starting_squares.append(start)
+
+
+map = [[None for i in range(256)] for j in range(256)]
 
 runs = []
 print("Parsing runs.")
@@ -187,10 +198,21 @@ while(keep_running):
     run.y = ord(fd.read(1))
     run.startx = ord(fd.read(1))
     run.endx = ord(fd.read(1))
-    run.data = fd.read(run.datalen - 4) # MAGIC NUMBER: datalen includes the length of the header. 
+    raw_data = fd.read(run.datalen - 4) # MAGIC NUMBER: datalen includes the length of the header. 
+                                        # 4 means there is no data!!!
 
-    print(run.to_s())
-                                             # 4 means there is no data!!!
+
+    #parse byte-by-byte into integral data from binary.
+    run.data = []
+    for i in raw_data:
+        run.data.append(ord(i))
+
+    print(run)
+
+    print("Applying to map")
+    run.apply_to_map(map)
+
+
     count += 1
 
     if(run.isEOF()):
@@ -202,5 +224,15 @@ while(keep_running):
 print("Encountered last run. Exiting.")
 print("Closing map file...")
 fd.close()
+
+print("printing rendered map.")
+for i in map:
+    for j in i:
+        if(None == j):
+            print(".."),
+        else:
+            print(j),
+        print(" "),
+    print("")
 
 print("Good Bye!")

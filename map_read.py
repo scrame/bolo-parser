@@ -112,6 +112,7 @@ class Run:
         self.endx = None
         self.data = None
 
+
         
     #The hard part. The data is held in run-level encoding, and has to read the MSB of 
     #each byte of data. 
@@ -154,37 +155,8 @@ class Run:
 #of bytes with an extra zero nibble.
     
     def get_symbols(self):
-        retval = []
-
-        x = self.startx
-        nibble = 0
-        nibble += 1
-
-        while(x < self.endx+1):            
-            instruction = self.data[nibble]
-            if(0 <= instruction <=7):
-                print("heterogenous: " + str(instruction))
-                s_len = instruction + 1
-                for i in range(s_len):
-                    print("x: ",x," nibble: ",nibble," len(data): ",len(self.data),"tile: ",self.data[nibble]," retval size:",len(retval)," max_len: ",(self.endx - self.startx))
-                    retval.append(self.data[nibble])
-                    nibble += 1
-                    x += 1
-                
-            elif(8 <= instruction <= 15):
-                print("homogenous: " + str(instruction))
-                s_len = instruction-6
-                for i in range(s_len):
-                    print("x: ",x," nibble: ",nibble," len(data): ",len(self.data),"tile: ",self.data[nibble]," retval size:",len(retval)," max_len: ",(self.endx - self.startx))
-                    retval.append(self.data[nibble])
-                    x += 1
-
-            else:
-                print("ERROR! COMMAND OUT OF RANGE! -- Command: " + str(instruction))
-                exit(255)
-
-        return retval
-
+        return("Working on it!")
+ 
 
 
 
@@ -199,7 +171,7 @@ class Run:
         return False
         
     def __repr__(self):
-        return ("len:\t" + str(self.datalen)
+        return ("len:\t" + str(self.datalen) + " -- (" + str( (self.datalen -4) /2) + " niblets)"
         + ("\ny:\t" + str(self.y))
         + ("\nstartx:\t" + str(self.startx))
         + ("\nendx:\t" + str(self.endx))
@@ -311,10 +283,9 @@ while(keep_running):
 
 
 
-run = runs[0]
-print(run)
-run.get_symbols()
-
+for run in runs:
+    print(run)
+    run.get_symbols()
 
 
 

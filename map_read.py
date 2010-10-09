@@ -1,5 +1,16 @@
 #!/usr/bin/python
 
+##### TODO: Handle with commandline
+map_file= "maps/Fitzhu.map"
+
+print("Opening: " + map_file);
+
+fd = open(map_file, "rb");
+
+
+####TODO: CLASSES -- either find a good inheritance hierarchy, or convert to structs and write in C.
+
+#Classes that the files collections are mapped to.
 class Pillbox:
     def __init__(self):
         self.x = None
@@ -46,46 +57,6 @@ class StartingPoint:
         + ("\ndir:\t" + str(self.dir)))
 
 
-class TerrainIndex:
-    terrain_names = [
-        "building",
-        "river",
-        "swamp",
-        "crater",
-        "road",
-        "forest",
-        "rubble",
-        "grass",
-        "shot building",
-        "river with boat",
-        "swamp w/mine",
-        "crater w/mine",
-        "road w/mine",
-        "forest w/mine",
-        "rubble w/mine",
-        "grass w/mine"
-        ]
-
-    terrain_symbols = [
-        "[]",
-        "SS",
-        "VV",
-        "__",
-        "==",
-        "^^",
-        "XX",
-        ";;",
-        "][",
-        "BB",
-        "V*",
-        "_*",
-        "=*",
-        "^*",
-        "X*",
-        ";*"
-        ]
-
-
 class Run:
     def __init__(self):
         self.datalen = None
@@ -129,20 +100,68 @@ class Run:
         + ("\nendx:\t" + str(self.endx))
         + ("\ndata:\t" + str(self.data)))
 
+#Utility class that provides integer lookups for english names or symbols.
+#Not currently used.
+#Possibly YAGNI
+class TerrainIndex:
+    terrain_names = [
+        "building",
+        "river",
+        "swamp",
+        "crater",
+        "road",
+        "forest",
+        "rubble",
+        "grass",
+        "shot building",
+        "river with boat",
+        "swamp w/mine",
+        "crater w/mine",
+        "road w/mine",
+        "forest w/mine",
+        "rubble w/mine",
+        "grass w/mine"
+        ]
 
-map_file= "maps/Fitzhu.map"
+    terrain_symbols = [
+        "[]",
+        "SS",
+        "VV",
+        "__",
+        "==",
+        "^^",
+        "XX",
+        ";;",
+        "][",
+        "BB",
+        "V*",
+        "_*",
+        "=*",
+        "^*",
+        "X*",
+        ";*"
+        ]
 
-print("Opening: " + map_file);
 
-fd = open(map_file, "rb");
+
+
+
+#Start of reading!
+#assumes fd is a file descriptor.
+
 
 header = str(fd.read(8))
 
+#File identifier
 if("BMAPBOLO" != header):
     print "Error! Invalid or corrupted map file"
     exit(0)
 
 print header + " looks good."
+
+
+#for now, print statements, and variables describe the process.
+#The rest of the script procedurally creates the map.
 
 map_version = ord(fd.read(1))
 print("Map version: " + str(map_version))

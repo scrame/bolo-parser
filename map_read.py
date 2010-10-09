@@ -272,8 +272,33 @@ print("Closing map file...")
 fd.close()
 
 
+def calculate_run(run):
+    print("Entering calculate_run.")
+
+#    
+#x = startx;
+#while (x < endx)
+#	{
+#	The first nibble encodes the length of this portion of the run,
+#	and whether this portion is a sequence of different squares,
+#	or a sequence of identical squares.
+#	
+#	If length is 0-7 then this is a sequence of different squares.
+#	The next (len+1) nibbles give the terrain for the next (len+1) squares.
+#	
+#	If length is 8-15 then this is a sequence of identical squares repeated.
+#	The next single  nibble gives the terrain for the next (len-6) squares.
+#	} (repeat until run is complete)
+#
+
 #
 for run in runs:
-    print(run)
+    if(not run.isEOF() ):
+        print(run)
+        print("Calculating run:")
 
+        calculate_run(run)
+    
+    
+    
 print("Good Bye!")

@@ -158,13 +158,17 @@ class Run:
 
         x = self.startx
         nibble = 0
-        while(x < self.endx):            
+
+
+        while(x < self.endx+1):            
             instruction = self.data[nibble]
             nibble += 1
             if(0 <= instruction <=7):
                 print("heterogenous")
                 s_len = instruction + 1
                 for i in range(s_len):
+                    print("x: ",x," nibble: ",nibble)
+                    print(self.data[nibble])
                     retval.append(self.data[nibble])
                     nibble += 1
                     x += 1
@@ -278,7 +282,8 @@ map = [[None for i in range(256)] for j in range(256)]
 runs = []
 print("Parsing runs.")
 keep_running = True
-count = 1
+
+count = 0
 while(keep_running):
     print "Run no:" + str(count)
     run = Run()
@@ -296,15 +301,20 @@ while(keep_running):
 
     run.parse_map_data(binary_data)
 
+    runs.append(run)
+
     if(run.isEOF()):
         print("EOF")
         keep_running = False
         break
 
-
-    print(run)
-
     count += 1
+
+
+
+run = runs[0]
+print(run)
+run.get_symbols()
 
 
 

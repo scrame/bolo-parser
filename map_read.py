@@ -171,7 +171,7 @@ class Run:
         return False
         
     def __repr__(self):
-        return ("len:\t" + str(self.datalen) + " -- (" + str( (self.datalen -4) /2) + " niblets)"
+        return ("len:\t" + str(self.datalen) + " -- (" + str( (self.datalen -4) * 2) + " niblets)"
         + ("\ny:\t" + str(self.y))
         + ("\nstartx:\t" + str(self.startx))
         + ("\nendx:\t" + str(self.endx))

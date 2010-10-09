@@ -8,7 +8,7 @@ print("Opening: " + map_file);
 fd = open(map_file, "rb");
 
 def read_byte():
-    return fd.read(1)
+    return ord(fd.read(1))
 
 
 #Utility class that provides integer lookups for english names or symbols.
@@ -178,16 +178,16 @@ print header + " looks good."
 #for now, print statements, and variables describe the process.
 #The rest of the script procedurally creates the map.
 
-map_version = ord(read_byte())
+map_version = read_byte()
 print("Map version: " + str(map_version))
 
-num_pillboxes = ord(read_byte())
+num_pillboxes = read_byte()
 print("No. Pillboxes: " + str(num_pillboxes))
 
-num_refuelling_stations = ord(read_byte())
+num_refuelling_stations = read_byte()
 print("No. Refuelling Stations: " + str(num_refuelling_stations))
 
-num_tank_starting_squares = ord(read_byte())
+num_tank_starting_squares = read_byte()
 print("No. Tank starting squares: " + str(num_tank_starting_squares))
 
 
@@ -197,11 +197,11 @@ pillboxes = []
 for i in range(num_pillboxes):
     print("Pillbox no: " + str(i))
     pillbox = Pillbox()
-    pillbox.x = ord(read_byte())
-    pillbox.y = ord(read_byte())
-    pillbox.owner = ord(read_byte())
-    pillbox.armor = ord(read_byte())
-    pillbox.speed = ord(read_byte())
+    pillbox.x = read_byte()
+    pillbox.y = read_byte()
+    pillbox.owner = read_byte()
+    pillbox.armor = read_byte()
+    pillbox.speed = read_byte()
     print(pillbox)
     pillboxes.append(pillbox)
 
@@ -210,12 +210,12 @@ refuellers = []
 for i in range(num_refuelling_stations):
     print("Refueller no: " + str(i) )
     refueller = Refueller()
-    refueller.x = ord(read_byte())
-    refueller.y = ord(read_byte())
-    refueller.owner = ord(read_byte())
-    refueller.armor = ord(read_byte())
-    refueller.shells = ord(read_byte())
-    refueller.mines = ord(read_byte())
+    refueller.x = read_byte()
+    refueller.y = read_byte()
+    refueller.owner = read_byte()
+    refueller.armor = read_byte()
+    refueller.shells = read_byte()
+    refueller.mines = read_byte()
     print(refueller)
     refuellers.append(refueller)
 
@@ -224,9 +224,9 @@ starting_squares = []
 for i in range(num_tank_starting_squares):
     print("Starter no: " + str(i) )
     start = StartingPoint()
-    start.x = ord(read_byte())
-    start.y = ord(read_byte())
-    start.dir = ord(read_byte())
+    start.x = read_byte()
+    start.y = read_byte()
+    start.dir = read_byte()
     print(start)
     starting_squares.append(start)
 
@@ -241,10 +241,10 @@ count = 0
 while(keep_running):
     print "Run no:" + str(count)
     run = Run()
-    run.datalen = ord(read_byte())
-    run.y = ord(read_byte())
-    run.startx = ord(read_byte())
-    run.endx = ord(read_byte())
+    run.datalen = read_byte()
+    run.y = read_byte()
+    run.startx = read_byte()
+    run.endx = read_byte()
     raw_data = fd.read(run.datalen - 4) # MAGIC NUMBER: datalen includes the length of the header. 
                                         # 4 means there is no data!!!
 

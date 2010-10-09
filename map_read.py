@@ -7,6 +7,9 @@ print("Opening: " + map_file);
 
 fd = open(map_file, "rb");
 
+def read_byte():
+    return fd.read(1)
+
 
 #Utility class that provides integer lookups for english names or symbols.
 #Not currently used.
@@ -162,7 +165,6 @@ class Run:
 #Start of reading!
 #assumes fd is a file descriptor.
 
-
 header = str(fd.read(8))
 
 #File identifier
@@ -176,16 +178,16 @@ print header + " looks good."
 #for now, print statements, and variables describe the process.
 #The rest of the script procedurally creates the map.
 
-map_version = ord(fd.read(1))
+map_version = ord(read_byte())
 print("Map version: " + str(map_version))
 
-num_pillboxes = ord(fd.read(1))
+num_pillboxes = ord(read_byte())
 print("No. Pillboxes: " + str(num_pillboxes))
 
-num_refuelling_stations = ord(fd.read(1))
+num_refuelling_stations = ord(read_byte())
 print("No. Refuelling Stations: " + str(num_refuelling_stations))
 
-num_tank_starting_squares = ord(fd.read(1))
+num_tank_starting_squares = ord(read_byte())
 print("No. Tank starting squares: " + str(num_tank_starting_squares))
 
 
@@ -195,11 +197,11 @@ pillboxes = []
 for i in range(num_pillboxes):
     print("Pillbox no: " + str(i))
     pillbox = Pillbox()
-    pillbox.x = ord(fd.read(1))
-    pillbox.y = ord(fd.read(1))
-    pillbox.owner = ord(fd.read(1))
-    pillbox.armor = ord(fd.read(1))
-    pillbox.speed = ord(fd.read(1))
+    pillbox.x = ord(read_byte())
+    pillbox.y = ord(read_byte())
+    pillbox.owner = ord(read_byte())
+    pillbox.armor = ord(read_byte())
+    pillbox.speed = ord(read_byte())
     print(pillbox)
     pillboxes.append(pillbox)
 
@@ -208,12 +210,12 @@ refuellers = []
 for i in range(num_refuelling_stations):
     print("Refueller no: " + str(i) )
     refueller = Refueller()
-    refueller.x = ord(fd.read(1))
-    refueller.y = ord(fd.read(1))
-    refueller.owner = ord(fd.read(1))
-    refueller.armor = ord(fd.read(1))
-    refueller.shells = ord(fd.read(1))
-    refueller.mines = ord(fd.read(1))
+    refueller.x = ord(read_byte())
+    refueller.y = ord(read_byte())
+    refueller.owner = ord(read_byte())
+    refueller.armor = ord(read_byte())
+    refueller.shells = ord(read_byte())
+    refueller.mines = ord(read_byte())
     print(refueller)
     refuellers.append(refueller)
 
@@ -222,9 +224,9 @@ starting_squares = []
 for i in range(num_tank_starting_squares):
     print("Starter no: " + str(i) )
     start = StartingPoint()
-    start.x = ord(fd.read(1))
-    start.y = ord(fd.read(1))
-    start.dir = ord(fd.read(1))
+    start.x = ord(read_byte())
+    start.y = ord(read_byte())
+    start.dir = ord(read_byte())
     print(start)
     starting_squares.append(start)
 
@@ -239,10 +241,10 @@ count = 0
 while(keep_running):
     print "Run no:" + str(count)
     run = Run()
-    run.datalen = ord(fd.read(1))
-    run.y = ord(fd.read(1))
-    run.startx = ord(fd.read(1))
-    run.endx = ord(fd.read(1))
+    run.datalen = ord(read_byte())
+    run.y = ord(read_byte())
+    run.startx = ord(read_byte())
+    run.endx = ord(read_byte())
     raw_data = fd.read(run.datalen - 4) # MAGIC NUMBER: datalen includes the length of the header. 
                                         # 4 means there is no data!!!
 

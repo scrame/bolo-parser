@@ -45,7 +45,8 @@ class StartingPoint:
         + ("\ny:\t" + str(self.x))
         + ("\ndir:\t" + str(self.dir)))
 
-class Run:
+
+class TerrainIndex:
     terrain_names = [
         "building",
         "river",
@@ -84,6 +85,8 @@ class Run:
         ";*"
         ]
 
+
+class Run:
     def __init__(self):
         self.datalen = None
         self.y = None
@@ -91,21 +94,23 @@ class Run:
         self.endx = None
         self.data = None
 
-
     #The hard part. The data is held in run-level encoding, and has to read the MSB of 
     #each byte of data. 
-    def apply_to_map(self, map):
+    def parse_map_data(self, binary_input_data):
         if(4 != self.datalen):
             data_counter = 0;
+            retval = []
             while(data_counter < self.datalen-4):
-                data_byte = self.data[data_counter]
+                data_byte = binary_input_data[data_counter]
                 #extract the most significant nibble (in decimal, not binary)
                 ms_nibble = ((data_byte & 240) >> 4)
                 #extract least significant nibble
                 ls_nibble = (data_byte & 15)
                 data_counter += 1
-                print(ms_nibble, ls_nibble),
-            print("")
+                retval.append(ms_nibble)
+                retval.append(ls_nibble)
+
+            self.data = retval
         
     #from the docs:
     #The end of the map is marked by a run { 4, 0xFF, 0xFF, 0xFF };
@@ -208,16 +213,14 @@ while(keep_running):
     raw_data = fd.read(run.datalen - 4) # MAGIC NUMBER: datalen includes the length of the header. 
                                         # 4 means there is no data!!!
 
-
+    binary_data = []
     #parse byte-by-byte into integral data from binary.
-    run.data = []
     for i in raw_data:
-        run.data.append(ord(i))
-
+        binary_data.append(ord(i))
+    run.parse_map_data(binary_data)
     print(run)
 
     print("Applying to map")
-    run.apply_to_map(map)
 
 
     count += 1

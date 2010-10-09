@@ -134,31 +134,6 @@ class Run:
 
     #the other hard part, execute the following algorithm:
 
-#The run data takes the form of a series of NIBBLEs, where NIBBLE means
-#half a byte, most significant half first, least significant second.
-#
-#x = startx;
-#while (x < endx)
-#	{
-#	The first nibble encodes the length of this portion of the run,
-#	and whether this portion is a sequence of different squares,
-#	or a sequence of identical squares.
-#	
-#	If length is 0-7 then this is a sequence of different squares.
-#	The next (len+1) nibbles give the terrain for the next (len+1) squares.
-#	
-#	If length is 8-15 then this is a sequence of identical squares repeated.
-#	The next single  nibble gives the terrain for the next (len-6) squares.
-#	} (repeat until run is complete)
-#
-#If a run ends on an odd nibble, then it is padded out to a whole number
-#of bytes with an extra zero nibble.
-    
-    def get_symbols(self):
-        return("Working on it!")
- 
-
-
 
     #from the docs:
     #The end of the map is marked by a run { 4, 0xFF, 0xFF, 0xFF };
@@ -171,10 +146,11 @@ class Run:
         return False
         
     def __repr__(self):
-        return ("len:\t" + str(self.datalen) + " -- (" + str( (self.datalen -4) * 2) + " niblets)"
+        return ("\nlen:\t" + str(self.datalen) + " -- (" + str( (self.datalen -4) * 2) + " niblets)"
         + ("\ny:\t" + str(self.y))
         + ("\nstartx:\t" + str(self.startx))
         + ("\nendx:\t" + str(self.endx))
+        + ("\nexpected output length: " + str(self.endx - self.startx) )
         + ("\ndata:\t" + str(self.data)))
 
 
@@ -283,24 +259,13 @@ while(keep_running):
 
 
 
-for run in runs:
-    print(run)
-    run.get_symbols()
-
-
-
 print("Encountered last run. Exiting.")
 print("Closing map file...")
 fd.close()
 
-#print("printing rendered map.")
-#for i in map:
-#    for j in i:
-#        if(None == j):
-#            print(".."),
-#        else:
-#            print(j),
-#        print(" "),
-#    print("")
+
+#
+for run in runs:
+    print(run)
 
 print("Good Bye!")

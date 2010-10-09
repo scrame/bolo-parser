@@ -201,7 +201,6 @@ class Run:
         + ("\nstartx:\t" + str(self.startx))
         + ("\nendx:\t" + str(self.endx))
         + ("\ndata:\t" + str(self.data)))
-#        + ("\nsymbols:\t" + str(self.get_symbols()))
 
 
 #Start of reading!

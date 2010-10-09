@@ -158,25 +158,24 @@ class Run:
 
         x = self.startx
         nibble = 0
-
+        nibble += 1
 
         while(x < self.endx+1):            
             instruction = self.data[nibble]
-            nibble += 1
             if(0 <= instruction <=7):
                 print("heterogenous: " + str(instruction))
                 s_len = instruction + 1
                 for i in range(s_len):
-                    print("x: ",x," nibble: ",nibble,"tile: ",self.data[nibble])
+                    print("x: ",x," nibble: ",nibble," len(data): ",len(self.data),"tile: ",self.data[nibble]," retval size:",len(retval)," max_len: ",(self.endx - self.startx))
                     retval.append(self.data[nibble])
                     nibble += 1
-                x = x + nibble
+                    x += 1
                 
             elif(8 <= instruction <= 15):
                 print("homogenous: " + str(instruction))
-                s_len = instruction + -6
+                s_len = instruction-6
                 for i in range(s_len):
-                    print("x: ",x," nibble: ",nibble,"tile: ",self.data[nibble])
+                    print("x: ",x," nibble: ",nibble," len(data): ",len(self.data),"tile: ",self.data[nibble]," retval size:",len(retval)," max_len: ",(self.endx - self.startx))
                     retval.append(self.data[nibble])
                     x += 1
 

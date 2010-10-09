@@ -154,11 +154,12 @@ class Run:
         return False
         
     def __repr__(self):
-        return ("\nlen:\t" + str(self.datalen) + " -- (" + str(self.get_nibblets()) + " niblets)"
+        return ("\nlen:\t" + str(self.datalen)
         + ("\ny:\t" + str(self.y))
         + ("\nstartx:\t" + str(self.startx))
         + ("\nendx:\t" + str(self.endx))
-        + ("\nexpected output length: " + str(self.get_expected_length()))
+        + ("\nexpected output length:\t" + str(self.get_expected_length()))
+        + ("\nnibblets:\t" + str(self.get_nibblets()))
         + ("\ndata:\t" + str(self.data)))
 
 

@@ -97,10 +97,15 @@ class Run:
     def apply_to_map(self, map):
         if(4 != self.datalen):
             data_counter = 0;
-            for x in range(self.startx, self.endx):
-                print x,":",self.y,self.data[data_counter]
-                map[self.y][x] = self.data[data_counter]
+            while(data_counter < self.datalen-4):
+                data_byte = self.data[data_counter]
+                #extract the most significant nibble (in decimal, not binary)
+                ms_nibble = ((data_byte & 240) >> 4)
+                #extract least significant nibble
+                ls_nibble = (data_byte & 15)
                 data_counter += 1
+                print(ms_nibble, ls_nibble),
+            print("")
         
     #from the docs:
     #The end of the map is marked by a run { 4, 0xFF, 0xFF, 0xFF };
@@ -116,7 +121,9 @@ class Run:
         return ("len:\t" + str(self.datalen)
         + ("\ny:\t" + str(self.y))
         + ("\nstartx:\t" + str(self.startx))
-        + ("\nendx:\t" + str(self.endx)))
+        + ("\nendx:\t" + str(self.endx))
+        + ("\ndata:\t" + str(self.data)))
+
 
 map_file= "maps/Fitzhu.map"
 
@@ -225,14 +232,14 @@ print("Encountered last run. Exiting.")
 print("Closing map file...")
 fd.close()
 
-print("printing rendered map.")
-for i in map:
-    for j in i:
-        if(None == j):
-            print(".."),
-        else:
-            print(j),
-        print(" "),
-    print("")
+#print("printing rendered map.")
+#for i in map:
+#    for j in i:
+#        if(None == j):
+#            print(".."),
+#        else:
+#            print(j),
+#        print(" "),
+#    print("")
 
 print("Good Bye!")

@@ -113,6 +113,11 @@ class Run:
         self.data = None
 
 
+    def get_nibblets(self):
+        return ((self.datalen -4) * 2)
+
+    def get_expected_length(self):
+        return self.endx - self.startx
         
     #The hard part. The data is held in run-level encoding, and has to read the MSB of 
     #each byte of data. 
@@ -146,11 +151,11 @@ class Run:
         return False
         
     def __repr__(self):
-        return ("\nlen:\t" + str(self.datalen) + " -- (" + str( (self.datalen -4) * 2) + " niblets)"
+        return ("\nlen:\t" + str(self.datalen) + " -- (" + str(self.get_nibblets()) + " niblets)"
         + ("\ny:\t" + str(self.y))
         + ("\nstartx:\t" + str(self.startx))
         + ("\nendx:\t" + str(self.endx))
-        + ("\nexpected output length: " + str(self.endx - self.startx) )
+        + ("\nexpected output length: " + str(self.get_expected_length()))
         + ("\ndata:\t" + str(self.data)))
 
 

@@ -8,8 +8,55 @@ print("Opening: " + map_file);
 fd = open(map_file, "rb");
 
 
-####TODO: CLASSES -- either find a good inheritance hierarchy, or convert to structs and write in C.
+#Utility class that provides integer lookups for english names or symbols.
+#Not currently used.
+#Possibly YAGNI
+class TerrainIndex:
+    terrain_names = [
+        "building",
+        "river",
+        "swamp",
+        "crater",
+        "road",
+        "forest",
+        "rubble",
+        "grass",
+        "shot building",
+        "river with boat",
+        "swamp w/mine",
+        "crater w/mine",
+        "road w/mine",
+        "forest w/mine",
+        "rubble w/mine",
+        "grass w/mine"
+        ]
 
+    terrain_symbols = [
+        "[]",
+        "SS",
+        "VV",
+        "__",
+        "==",
+        "^^",
+        "XX",
+        ";;",
+        "][",
+        "BB",
+        "V*",
+        "_*",
+        "=*",
+        "^*",
+        "X*",
+        ";*"
+        ]
+
+
+
+
+
+
+####TODO: CLASSES -- either find a good inheritance hierarchy, or convert to structs and write in C.
+##                      or at least make this a module.
 #Classes that the files collections are mapped to.
 class Pillbox:
     def __init__(self):
@@ -65,6 +112,7 @@ class Run:
         self.endx = None
         self.data = None
 
+        
     #The hard part. The data is held in run-level encoding, and has to read the MSB of 
     #each byte of data. 
     def parse_map_data(self, binary_input_data):
@@ -82,7 +130,32 @@ class Run:
                 retval.append(ls_nibble)
 
             self.data = retval
-        
+
+    #the other hard part, execute the following algorithm:
+
+#The run data takes the form of a series of NIBBLEs, where NIBBLE means
+#half a byte, most significant half first, least significant second.
+#
+#x = startx;
+#while (x < endx)
+#	{
+#	The first nibble encodes the length of this portion of the run,
+#	and whether this portion is a sequence of different squares,
+#	or a sequence of identical squares.
+#	
+#	If length is 0-7 then this is a sequence of different squares.
+#	The next (len+1) nibbles give the terrain for the next (len+1) squares.
+#	
+#	If length is 8-15 then this is a sequence of identical squares repeated.
+#	The next single  nibble gives the terrain for the next (len-6) squares.
+#	} (repeat until run is complete)
+#
+#If a run ends on an odd nibble, then it is padded out to a whole number
+#of bytes with an extra zero nibble.
+    
+    def get_symbols(self):
+        return self.data
+
     #from the docs:
     #The end of the map is marked by a run { 4, 0xFF, 0xFF, 0xFF };
     def isEOF(self):
@@ -98,50 +171,8 @@ class Run:
         + ("\ny:\t" + str(self.y))
         + ("\nstartx:\t" + str(self.startx))
         + ("\nendx:\t" + str(self.endx))
-        + ("\ndata:\t" + str(self.data)))
-
-#Utility class that provides integer lookups for english names or symbols.
-#Not currently used.
-#Possibly YAGNI
-class TerrainIndex:
-    terrain_names = [
-        "building",
-        "river",
-        "swamp",
-        "crater",
-        "road",
-        "forest",
-        "rubble",
-        "grass",
-        "shot building",
-        "river with boat",
-        "swamp w/mine",
-        "crater w/mine",
-        "road w/mine",
-        "forest w/mine",
-        "rubble w/mine",
-        "grass w/mine"
-        ]
-
-    terrain_symbols = [
-        "[]",
-        "SS",
-        "VV",
-        "__",
-        "==",
-        "^^",
-        "XX",
-        ";;",
-        "][",
-        "BB",
-        "V*",
-        "_*",
-        "=*",
-        "^*",
-        "X*",
-        ";*"
-        ]
-
+        + ("\ndata:\t" + str(self.data))
+        + ("\nsymbols:\t" + str(self.get_symbols())))
 
 
 
@@ -236,16 +267,18 @@ while(keep_running):
     #parse byte-by-byte into integral data from binary.
     for i in raw_data:
         binary_data.append(ord(i))
+
     run.parse_map_data(binary_data)
-    print(run)
-
-    print("Applying to map")
-
-
-    count += 1
 
     if(run.isEOF()):
+        print("EOF")
         keep_running = False
+        break
+
+
+    print(run)
+
+    count += 1
 
 
 

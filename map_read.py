@@ -154,7 +154,36 @@ class Run:
 #of bytes with an extra zero nibble.
     
     def get_symbols(self):
-        return self.data
+        retval = []
+
+        x = self.startx
+        nibble = 0
+        while(x < self.endx):            
+            instruction = self.data[nibble]
+            nibble += 1
+            if(0 <= instruction <=7):
+                print("heterogenous")
+                s_len = instruction + 1
+                for i in range(s_len):
+                    retval.append(self.data[nibble])
+                    nibble += 1
+                    x += 1
+                
+            elif(8 <= instruction <= 15):
+                print("homogenous")
+                s_len = instruction + -6
+                for i in range(s_len):
+                    retval.append(self.data[nibble])
+                    x += 1
+
+            else:
+                print("ERROR! COMMAND OUT OF RANGE! -- Command: " + str(instruction))
+                exit(255)
+
+        return retval
+
+
+
 
     #from the docs:
     #The end of the map is marked by a run { 4, 0xFF, 0xFF, 0xFF };
@@ -171,10 +200,8 @@ class Run:
         + ("\ny:\t" + str(self.y))
         + ("\nstartx:\t" + str(self.startx))
         + ("\nendx:\t" + str(self.endx))
-        + ("\ndata:\t" + str(self.data))
-        + ("\nsymbols:\t" + str(self.get_symbols())))
-
-
+        + ("\ndata:\t" + str(self.data)))
+#        + ("\nsymbols:\t" + str(self.get_symbols()))
 
 
 #Start of reading!

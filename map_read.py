@@ -279,11 +279,13 @@ def calculate_run(run):
 #	If length is 0-7 then this is a sequence of different squares.
 #	The next (len+1) nibbles give the terrain for the next (len+1) squares.
 #
-        pass
-
 #	If length is 8-15 then this is a sequence of identical squares repeated.
 #	The next single  nibble gives the terrain for the next (len-6) squares.
 #	} (repeat until run is complete)
+
+        d = run.data        
+        print d
+        break
     pass
 
 for run in runs:
@@ -291,7 +293,7 @@ for run in runs:
         print(run)
         print("Calculating run:")
 
-#        calculate_run(run)
+        calculate_run(run)
     
     
     

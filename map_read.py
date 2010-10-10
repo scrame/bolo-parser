@@ -13,14 +13,23 @@ class MapFile:
         self.read_starting_squares(fd)
         self.read_runs(fd)
 
+        self.calculate_map()
+
         fd.close()
         fd = None
+
+
+    def calculate_map(self):
+        print("trying to calculate the map")
+        map = [ [ str(str(i)+":"+str(j)) for i in range(256) ] for j in range(256)]         
+        print(map)
+        
 
     def read_header(self,fd):
         self.header = str(fd.read(8))
 
         if("BMAPBOLO" != self.header):
-            print "Error! Invalid or corrupted map file"
+            print("Error! Invalid or corrupted map file")
             exit(255)
 
         self.map_version = ord(fd.read(1))
@@ -84,6 +93,3 @@ class MapFile:
 
             run.calculate_run()
             self.runs.append(run)
-
-        
-

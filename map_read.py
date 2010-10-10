@@ -114,7 +114,7 @@ class Run:
         self.startx = None
         self.endx = None
         self.data = None
-
+        self.run_tiles = None
 
     def get_nibblets(self):
         return ((self.datalen -4) * 2)
@@ -141,6 +141,48 @@ class Run:
             self.data = retval
 
     #the other hard part, execute the following algorithm:
+    def calculate_run(self):    
+        print("Parsing data: " + str(self.data))
+        expected_length = (self.endx - self.startx)
+        output = []
+        d = self.data
+        dp = 0
+
+        inst = d[dp]
+
+        while(None != inst):
+            print("starting inst: ", inst)
+
+            if(0 <= inst <= 7):
+                for i in range(inst+1):
+                    print("heterogenous: ", inst)
+                    dp+=1
+                    tile = d[dp]
+                    print("selected tile: ", tile)
+                    output.append(tile)
+                dp+=1
+            else:
+                print("homogenous: ", inst)
+                length = inst - 6 #MAGIC NUMBER: Described in the algorightm
+                for i in range(length):
+                    print("Tracking tile " , i)
+                    tile = d[dp+1]
+                    print("selected tile: ", tile)
+                    output.append(tile)
+                dp += 2
+            if( (dp+1) < len(d)):
+                inst = d[dp]
+            else:
+                inst = None
+
+        print("testing expected_length...")
+        if(len(output) != expected_length):
+            print("ERROR: Output is the wrong length! expected: ",expected_length," actual: ",len(output))
+            exit(255)
+
+        print("Looks good!")
+        print(output)
+        self.run_tiles = output
 
 
     #from the docs:
@@ -256,12 +298,15 @@ while(keep_running):
 
     run.parse_map_data(binary_data)
 
-    runs.append(run)
-
     if(run.isEOF()):
         print("EOF")
         keep_running = False
         break
+
+    run.calculate_run()
+
+    runs.append(run)
+
 
     count += 1
 
@@ -271,64 +316,5 @@ print("Encountered last run. Exiting.")
 print("Closing map file...")
 fd.close()
 
-
-def calculate_run(run):    
-    print("Parsing data: " + str(run.data))
-    expected_length = (run.endx - run.startx)
-    output = []
-    d = run.data
-    dp = 0
-
-    inst = d[dp]
-
-    while(None != inst):
-        print("starting inst: ", inst)
-
-        if(0 <= inst <= 7):
-            for i in range(inst+1):
-                print("heterogenous: ", inst)
-                dp+=1
-                tile = d[dp]
-                print("selected tile: ", tile)
-                output.append(tile)
-            dp+=1
-        else:
-            print("homogenous: ", inst)
-            length = inst - 6 #MAGIC NUMBER: Described in the algorightm
-            for i in range(length):
-                print("Tracking tile " , i)
-                tile = d[dp+1]
-                print("selected tile: ", tile)
-                output.append(tile)
-            dp += 2
-        if( (dp+1) < len(d)):
-            inst = d[dp]
-        else:
-            inst = None
-
-    print("testing expected_length...")
-    if(len(output) != expected_length):
-        print("ERROR: Output is the wrong length! expected: ",expected_length," actual: ",len(output))
-        exit(255)
-
-    print("Looks good!")
-    print(output)
-    return output
-
-calculate_run(runs[0])
-
-rendered_runs = []
-
-for run in runs:
-    if(not run.isEOF() ):
-        print(run)
-        print("Calculating run:")
-
-        rendered_runs.append(calculate_run(run))
-        
-    
-
-for i in rendered_runs:
-    print(i)
-    
 print("Good Bye!")
+

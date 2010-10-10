@@ -22,23 +22,23 @@ class MapFile:
         #for now, print statements, and variables describe the process.
         #The rest of the script procedurally creates the map.
 
-        map_version = ord(fd.read(1))
-        print("Map version: " + str(map_version))
+        self.map_version = ord(fd.read(1))
+        print("Map version: " + str(self.map_version))
 
-        num_pillboxes = ord(fd.read(1))
-        print("No. Pillboxes: " + str(num_pillboxes))
+        self.num_pillboxes = ord(fd.read(1))
+        print("No. Pillboxes: " + str(self.num_pillboxes))
 
-        num_refuelling_stations = ord(fd.read(1))
-        print("No. Refuelling Stations: " + str(num_refuelling_stations))
+        self.num_refuelling_stations = ord(fd.read(1))
+        print("No. Refuelling Stations: " + str(self.num_refuelling_stations))
 
-        num_tank_starting_squares = ord(fd.read(1))
-        print("No. Tank starting squares: " + str(num_tank_starting_squares))
+        self.num_tank_starting_squares = ord(fd.read(1))
+        print("No. Tank starting squares: " + str(self.num_tank_starting_squares))
 
 
 
         print("Parsing Pillboxes")
-        pillboxes = []
-        for i in range(num_pillboxes):
+        self.pillboxes = []
+        for i in range(self.num_pillboxes):
             print("Pillbox no: " + str(i))
             pillbox = Pillbox()
             pillbox.x = ord(fd.read(1))
@@ -47,11 +47,11 @@ class MapFile:
             pillbox.armor = ord(fd.read(1))
             pillbox.speed = ord(fd.read(1))
             print(pillbox)
-            pillboxes.append(pillbox)
+            self.pillboxes.append(pillbox)
 
         print("Parsing Refuelling Stations")
-        refuellers = []
-        for i in range(num_refuelling_stations):
+        self.refuellers = []
+        for i in range(self.num_refuelling_stations):
             print("Refueller no: " + str(i) )
             refueller = Refueller()
             refueller.x = ord(fd.read(1))
@@ -61,21 +61,21 @@ class MapFile:
             refueller.shells = ord(fd.read(1))
             refueller.mines = ord(fd.read(1))
             print(refueller)
-            refuellers.append(refueller)
+            self.refuellers.append(refueller)
 
         print("Parsing Starting Squares")
-        starting_squares = []
-        for i in range(num_tank_starting_squares):
+        self.starting_squares = []
+        for i in range(self.num_tank_starting_squares):
             print("Starter no: " + str(i) )
             start = StartingPoint()
             start.x = ord(fd.read(1))
             start.y = ord(fd.read(1))
             start.dir = ord(fd.read(1))
             print(start)
-            starting_squares.append(start)
+            self.starting_squares.append(start)
 
         print("Parsing runs.")
-        runs = []
+        self.runs = []
         keep_running = True
 
         count = 0
@@ -102,6 +102,6 @@ class MapFile:
                 break
 
             run.calculate_run()
-            runs.append(run)
+            self.runs.append(run)
             count += 1
 

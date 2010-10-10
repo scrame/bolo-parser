@@ -272,28 +272,38 @@ print("Closing map file...")
 fd.close()
 
 
-def calculate_run(run):
-    print("Entering calculate_run.") 
-    x = run.startx
-    while(x < run.endx):
-#	If length is 0-7 then this is a sequence of different squares.
-#	The next (len+1) nibbles give the terrain for the next (len+1) squares.
+def calculate_run(run):    
+    expected_length = (run.endx - run.startx)
+    output = []
+    d = run.data
+    dp = 0
+
+    inst = d[dp]
+    print("starting inst: ", inst)
+    
+    if(0 <= inst <= 7):
+        print("heterogenous")
+        exit(0)
+    else:
+        print("homogenous")
+        length = inst - 6 #MAGIC NUMBER: Described in the algorightm
+        for i in range(length):
+            print("Tracking tile " , i)
+
+    print("testing expected_length...")
+    if(len(output) != expected_length):
+        print("ERROR: Output is the wrong length!")
+        exit(255)
+
+
+calculate_run(runs[0])
+
+#for run in runs:
+#    if(not run.isEOF() ):
+#        print(run)
+#        print("Calculating run:")
 #
-#	If length is 8-15 then this is a sequence of identical squares repeated.
-#	The next single  nibble gives the terrain for the next (len-6) squares.
-#	} (repeat until run is complete)
-
-        d = run.data        
-        print d
-        break
-    pass
-
-for run in runs:
-    if(not run.isEOF() ):
-        print(run)
-        print("Calculating run:")
-
-        calculate_run(run)
+#        calculate_run(run)
     
     
     

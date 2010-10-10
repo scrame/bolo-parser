@@ -1,17 +1,5 @@
 #!/usr/bin/python
 from map_read import *
+from sys import argv
 
-##### TODO: Handle with commandline
-map_file= "maps/Fitzhu.map"
-
-print("Opening: " + map_file);
-
-fd = open(map_file, "rb");
-
-MapFile(fd)
-
-print("Closing map file...")
-fd.close()
-
-print("Good Bye!")
-
+m = MapFile(argv[1])

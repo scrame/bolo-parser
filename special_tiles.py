@@ -1,59 +1,16 @@
 #Classes that the files collections are mapped to.
+import pprint
+
 class Pillbox:
-    def __init__(self):
-        self.x = None
-        self.y = None
-        self.owner = None
-        self.armor = None
-        self.speed = None
-
-    def __repr__(self):
-        return ("x:\t" + str(self.x)
-        + ("\ny:\t" + str(self.x))
-        + ("\nowner:\t" + str(self.owner))
-        + ("\narmor:\t" + str(self.armor))
-        + ("\nspeed:\t" + str(self.speed)))
-
+    pass
 
 class Refueller:
-    def __init__(self):
-        self.x = None
-        self.y = None
-        self.owner = None
-        self.armor = None
-        self.shells = None
-        self.mines = None
-        
-    def __repr__(self):
-        return ("x:\t" + str(self.x)
-        + ("\ny:\t" + str(self.x))
-        + ("\nowner:\t" + str(self.owner))
-        + ("\narmor:\t" + str(self.armor))
-        + ("\nshells:\t" + str(self.shells))
-        + ("\nmines:\t" + str(self.mines)))
-
+    pass
 
 class StartingPoint:
-    def __init__(self):
-        self.x = None
-        self.y = None
-        self.dir = None
-    
-    def __repr__(self):
-        return ("x:\t" + str(self.x)
-        + ("\ny:\t" + str(self.x))
-        + ("\ndir:\t" + str(self.dir)))
-
+    pass
 
 class Run:
-    def __init__(self):
-        self.datalen = None
-        self.y = None
-        self.startx = None
-        self.endx = None
-        self.data = None
-        self.run_tiles = None
-
     def get_nibblets(self):
         return ((self.datalen -4) * 2)
 
@@ -92,7 +49,8 @@ class Run:
             #print("starting inst: ", inst)
 
             if(0 <= inst <= 7):
-                for i in range(inst+1):
+                length = inst + 1 #MAGIC NUMBER: Described in the algorightm
+                for i in range(length):
                     #print("heterogenous: ", inst)
                     dp+=1
                     tile = d[dp]
@@ -132,12 +90,3 @@ class Run:
                     if(255 == self.endx):
                         return True
         return False
-        
-    def __repr__(self):
-        return ("\nlen:\t" + str(self.datalen)
-        + ("\ny:\t" + str(self.y))
-        + ("\nstartx:\t" + str(self.startx))
-        + ("\nendx:\t" + str(self.endx))
-        + ("\nexpected output length:\t" + str(self.get_expected_length()))
-        + ("\nnibblets:\t" + str(self.get_nibblets()))
-        + ("\ndata:\t" + str(self.data)))

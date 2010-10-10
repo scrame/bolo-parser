@@ -3,7 +3,11 @@
 from special_tiles import *
 
 class MapFile:
-    def __init__(self,fd):
+    def __init__(self,map_file):
+
+        #print("Opening: " + map_file);
+        fd = open(map_file, "rb");
+
         #Start of reading!
         #assumes fd is a file descriptor.
         
@@ -102,4 +106,7 @@ class MapFile:
             run.calculate_run()
             self.runs.append(run)
             count += 1
+
+        #print("Closing map file...")
+        fd.close()
 

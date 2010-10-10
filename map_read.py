@@ -73,8 +73,8 @@ def parse_file(fd):
         print(start)
         starting_squares.append(start)
 
-    runs = []
     print("Parsing runs.")
+    runs = []
     keep_running = True
 
     count = 0

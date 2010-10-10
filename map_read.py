@@ -22,13 +22,13 @@ class MapFile:
 
     def calculate_map(self):
         print("trying to calculate the map")
-        map = []
+        self.map = []
         for i in range(256):
             row = []
             for j in range(256):
                 row.append(TerrainIndex.default_symbol)
 
-            map.append(row)
+            self.map.append(row)
 
 
     def read_header(self,fd):

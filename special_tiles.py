@@ -37,7 +37,6 @@ class Run:
 
     #the other hard part, execute the following algorithm:
     def calculate_run(self):    
-        #print("Parsing data: " + str(self.data))
         expected_length = (self.endx - self.startx)
         output = []
         d = self.data
@@ -46,24 +45,17 @@ class Run:
         inst = d[dp]
 
         while(None != inst):
-            #print("starting inst: ", inst)
-
             if(0 <= inst <= 7):
                 length = inst + 1 #MAGIC NUMBER: Described in the algorightm
                 for i in range(length):
-                    #print("heterogenous: ", inst)
                     dp+=1
                     tile = d[dp]
-                    #print("selected tile: ", tile)
                     output.append(tile)
                 dp+=1
             else:
-                #print("homogenous: ", inst)
                 length = inst - 6 #MAGIC NUMBER: Described in the algorightm
                 for i in range(length):
-                    #print("Tracking tile " , i)
                     tile = d[dp+1]
-                    #print("selected tile: ", tile)
                     output.append(tile)
                 dp += 2
             if( (dp+1) < len(d)):
@@ -71,13 +63,10 @@ class Run:
             else:
                 inst = None
 
-        #print("testing expected_length...")
         if(len(output) != expected_length):
-            #print("ERROR: Output is the wrong length! expected: ",expected_length," actual: ",len(output))
+            print("ERROR: Output is the wrong length! expected: ",expected_length," actual: ",len(output))
             exit(255)
 
-        #print("Looks good!")
-        #print(output)
         self.run_tiles = output
 
 

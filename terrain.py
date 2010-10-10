@@ -4,6 +4,7 @@
 #Not currently used.
 #Possibly YAGNI
 class TerrainIndex:
+    default_index = -1
     default_symbol = "."
 
     terrain_names = [

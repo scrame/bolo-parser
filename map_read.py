@@ -15,10 +15,14 @@ class MapFile:
         self.read_runs(fd)
 
         self.calculate_map()
+        self.print_map()
 
         fd.close()
         fd = None
 
+    def print_map(self):
+        f = open("/tmp/map.tmp", "w")
+        f.close()
 
     def calculate_map(self):
         print("trying to calculate the map")
@@ -26,10 +30,9 @@ class MapFile:
         for i in range(256):
             row = []
             for j in range(256):
-                row.append(TerrainIndex.default_symbol)
+                row.append(TerrainIndex.default_index)
 
             self.map.append(row)
-
 
     def read_header(self,fd):
         self.header = str(fd.read(8))

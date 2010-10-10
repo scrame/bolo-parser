@@ -1,6 +1,7 @@
 #parse_file takes a file descriptor of a map file and processes it.
 
 from special_tiles import *
+from terrain import *
 
 class MapFile:
 
@@ -21,9 +22,14 @@ class MapFile:
 
     def calculate_map(self):
         print("trying to calculate the map")
-        map = [ [ str(str(i)+":"+str(j)) for i in range(256) ] for j in range(256)]         
-        print(map)
-        
+        map = []
+        for i in range(256):
+            row = []
+            for j in range(256):
+                row.append(TerrainIndex.default_symbol)
+
+            map.append(row)
+
 
     def read_header(self,fd):
         self.header = str(fd.read(8))

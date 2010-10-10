@@ -4,6 +4,8 @@
 #Not currently used.
 #Possibly YAGNI
 class TerrainIndex:
+    default_symbol = "."
+
     terrain_names = [
         "building",
         "river",
@@ -24,23 +26,21 @@ class TerrainIndex:
         ]
 
     terrain_symbols = [
-        "[]",
-        "SS",
-        "VV",
-        "__",
-        "==",
-        "^^",
-        "XX",
-        ";;",
-        "][",
-        "BB",
-        "V*",
-        "_*",
-        "=*",
-        "^*",
-        "X*",
-        ";*"
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "g",
+        "h",
+        "i",
+        "j",
+        "k",
+        "l",
+        "m",
+        "n",
+        "o",
+        "p"
         ]
-
-
 

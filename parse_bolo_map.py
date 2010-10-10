@@ -8,7 +8,7 @@ print("Opening: " + map_file);
 
 fd = open(map_file, "rb");
 
-parse_file(fd)
+MapFile(fd)
 
 print("Closing map file...")
 fd.close()

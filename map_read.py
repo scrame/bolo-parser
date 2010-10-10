@@ -273,38 +273,62 @@ fd.close()
 
 
 def calculate_run(run):    
+    print("Parsing data: " + str(run.data))
     expected_length = (run.endx - run.startx)
     output = []
     d = run.data
     dp = 0
 
     inst = d[dp]
-    print("starting inst: ", inst)
-    
-    if(0 <= inst <= 7):
-        print("heterogenous")
-        exit(0)
-    else:
-        print("homogenous")
-        length = inst - 6 #MAGIC NUMBER: Described in the algorightm
-        for i in range(length):
-            print("Tracking tile " , i)
+
+    while(None != inst):
+        print("starting inst: ", inst)
+
+        if(0 <= inst <= 7):
+            for i in range(inst+1):
+                print("heterogenous: ", inst)
+                dp+=1
+                tile = d[dp]
+                print("selected tile: ", tile)
+                output.append(tile)
+            dp+=1
+        else:
+            print("homogenous: ", inst)
+            length = inst - 6 #MAGIC NUMBER: Described in the algorightm
+            for i in range(length):
+                print("Tracking tile " , i)
+                tile = d[dp+1]
+                print("selected tile: ", tile)
+                output.append(tile)
+            dp += 2
+        if( (dp+1) < len(d)):
+            inst = d[dp]
+        else:
+            inst = None
 
     print("testing expected_length...")
     if(len(output) != expected_length):
-        print("ERROR: Output is the wrong length!")
+        print("ERROR: Output is the wrong length! expected: ",expected_length," actual: ",len(output))
         exit(255)
 
+    print("Looks good!")
+    print(output)
+    return output
 
 calculate_run(runs[0])
 
-#for run in runs:
-#    if(not run.isEOF() ):
-#        print(run)
-#        print("Calculating run:")
-#
-#        calculate_run(run)
+rendered_runs = []
+
+for run in runs:
+    if(not run.isEOF() ):
+        print(run)
+        print("Calculating run:")
+
+        rendered_runs.append(calculate_run(run))
+        
     
-    
+
+for i in rendered_runs:
+    print(i)
     
 print("Good Bye!")

@@ -21,7 +21,7 @@ class MapFile:
 
         if("BMAPBOLO" != self.header):
             print "Error! Invalid or corrupted map file"
-            exit(0)
+            exit(255)
 
         self.map_version = ord(fd.read(1))
         self.num_pillboxes = ord(fd.read(1))

@@ -3,6 +3,7 @@
 from special_tiles import *
 
 class MapFile:
+
     def __init__(self,map_file):
         fd = open(map_file, "rb");
         self.header = str(fd.read(8))
@@ -56,7 +57,6 @@ class MapFile:
             run.startx = ord(fd.read(1))
             run.endx = ord(fd.read(1))
             raw_data = fd.read(run.datalen - 4) # MAGIC NUMBER: datalen includes the length of the header. 
-                                                # 4 means there is no data!!!
 
             binary_data = []
             for i in raw_data:
@@ -65,7 +65,7 @@ class MapFile:
             run.parse_map_data(binary_data)
 
             if(run.isEOF()):
-                print("Encountered last run. Exiting.")
+                #print("Encountered last run. Exiting.")
                 keep_running = False
                 break
 

@@ -2,12 +2,15 @@
 
 from special_tiles import *
 from terrain import *
+from os.path import basename
+
 
 class MapFile:
 
     def __init__(self,map_file):
         fd = open(map_file, "rb");
 
+        self.map_name=basename(map_file)
         self.read_header(fd)
         self.read_pillboxes(fd)
         self.read_refuellers(fd)
@@ -15,24 +18,37 @@ class MapFile:
         self.read_runs(fd)
 
         self.calculate_map()
-        self.print_map()
+        self.write_map()
 
         fd.close()
         fd = None
 
-    def print_map(self):
-        f = open("/tmp/map.tmp", "w")
+    def write_map(self):
+        f = open(self.map_name + ".txt", "w")
+        for x in self.map:
+            for y in x:
+                if(TerrainIndex.default_index == y):
+                    f.write(TerrainIndex.default_symbol),
+                else:
+                    f.write(TerrainIndex.terrain_symbols[y])
+            f.write("\n")
         f.close()
 
     def calculate_map(self):
         print("trying to calculate the map")
         self.map = []
+        #zeroing out the map.
         for i in range(256):
             row = []
             for j in range(256):
                 row.append(TerrainIndex.default_index)
-
             self.map.append(row)
+            
+        for run in self.runs:
+            i = run.startx
+            for d in run.run_tiles:
+                self.map[i][run.y] = d
+                i+=1
 
     def read_header(self,fd):
         self.header = str(fd.read(8))
